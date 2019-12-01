@@ -1,0 +1,3 @@
+ npm install vue-router
+ npm i vue bootstrap-vue bootstrap
+ npm install axios --save
