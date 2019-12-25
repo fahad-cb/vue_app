@@ -1,6 +1,7 @@
 # weather
 
 > A Vue.js project
+> This is a sample weather app lets you see the weather for some cities of europe
 
 ## Build Setup
 
