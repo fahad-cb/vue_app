@@ -1,0 +1,25 @@
+FROM python:3.9
+
+# ---------- install ----------
+COPY ./supplyme_core /opt/supplyme_core/supplyme_core
+COPY ./README.md /opt/supplyme_core/README.md
+COPY ./MANIFEST.in /opt/supplyme_core/MANIFEST.in
+COPY ./setup.cfg /opt/supplyme_core/setup.cfg
+COPY ./setup.py /opt/supplyme_core/setup.py
+
+WORKDIR /opt/supplyme_core/
+RUN pip install flake8
+RUN apt-get update
+RUN apt install gdal-bin python3-gdal libgdal-dev -y
+RUN apt install wkhtmltopdf -y
+
+RUN apt install unzip -y
+RUN apt-get install binutils -y
+RUN pip install GDAL==$(gdal-config --version | awk -F'[.]' '{print $1"."$2}')
+RUN python setup.py sdist && pip install dist/*
+
+VOLUME /opt/init
+COPY scripts/staging/docker-entrypoint.sh /usr/local/bin/
+ADD  supplyme_core /opt/supplyme_core
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
+CMD ['python3']
